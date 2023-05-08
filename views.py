@@ -736,8 +736,10 @@ class ShortURLView(APIView):
         url = f'{SHORTURLS_URL}'
         try:
             response = requests.post(url, data=data)
+            print(response.content)
         except Exception as e:
             logger.info(f'CMS is not responding to requests -- {str(e)} -- {url}')
+            print('hii')
             return Response(
                 'Connection Refused',
                 status=status.HTTP_502_BAD_GATEWAY,
@@ -751,6 +753,7 @@ class ShortURLView(APIView):
     def post(self, request):
         data = self.get_faculty_info(request)
         user = request.user.username
+        data["request_from"]="facApp"
         data["action"] = "post"
         data["short"] = request.data.get("shorturl",None)
         url = f'{SHORTURLS_URL}'
